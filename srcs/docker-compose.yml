@@ -3,6 +3,7 @@ services:
     build: 
       context: .
       dockerfile: requirements/mariadb/Dockerfile
+    image: mariadb:v1
     container_name: mariadb
     restart: always
     env_file: .env
@@ -15,6 +16,7 @@ services:
     build: 
       context: .
       dockerfile: requirements/wordpress/Dockerfile
+    image: wordpress:v1
     container_name: wordpress
     restart: always
     depends_on:
@@ -29,6 +31,7 @@ services:
     build: 
       context: .
       dockerfile: requirements/nginx/Dockerfile
+    image: nginx:v1
     container_name: nginx
     restart: always
     depends_on:
@@ -51,10 +54,10 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/${USER_LOGIN}/data/mariadb
+      device: /home/${USER}/data/mariadb
   wordpress_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/${USER_LOGIN}/data/wordpress
+      device: /home/${USER}/data/wordpress
