@@ -10,8 +10,12 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
     mysql_install_db --user=mysql --datadir=/var/lib/mysql
 fi
 
-mysqld_safe --skip-grant-tables &
-sleep 5
+mysqld --user=mysql --skip-grant-tables &
+MYSQL_PID=$!
+
+until mysqladmin ping --silent; do
+    sleep 1
+done
 
 mariadb -u root << EOF
 FLUSH PRIVILEGES;
@@ -24,5 +28,7 @@ EOF
 
 mysqladmin -u root -p${MYSQL_ROOT_PASSWORD} shutdown
 
+wait $MYSQL_PID
+
 echo "MariaDB starting normally..."
-exec mysqld_safe
+exec mysqld --user=mysql
