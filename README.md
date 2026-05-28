@@ -1,3 +1,5 @@
+# Inception
+
 *This project has been created as part of the 42 curriculum by halmuhis.*
 
 ## Description
@@ -13,6 +15,13 @@ own dedicated container, following strict security and configuration rules.
 3. Run `make` at the root of the repository.
 4. Access the website at `https://halmuhis.42.fr`.
 5. Run `make down` to stop the infrastructure.
+
+## Makefile Targets
+- `make` / `make all` — create data directories, build images, start containers in detached mode.
+- `make down` — stop the containers without removing data.
+- `make clean` — stop containers and remove images, volumes, and orphans.
+- `make fclean` — full cleanup including persistent host data at `/home/halmuhis/data`.
+- `make re` — full rebuild (`fclean` + `all`).
 
 ## Theoretical Concepts & Comparisons
 
@@ -40,12 +49,18 @@ Bind Mounts link a specific host path directly into the container —
 dependent on the host directory structure and can break across machines.
 Docker Volumes are managed entirely by Docker, safer, easier to back up, 
 and consistent regardless of the host OS.
+This project uses named volumes declared with the `local` driver and 
+`type=none, o=bind, device=/home/halmuhis/data/...` options, because the 
+subject mandates host paths under `/home/<login>/data`. This combines 
+compose-level volume hygiene with the required host-path persistence.
 
 ## Resources
 - Docker Official Documentation: https://docs.docker.com/
 - Nginx Documentation: https://nginx.org/en/docs/
 - WordPress CLI: https://wp-cli.org/
 - MariaDB Documentation: https://mariadb.com/kb/en/
-- **AI Usage:** AI was used to brainstorm best practices for PID 1 
-  management inside containers, understand the difference between 
-  Docker Volumes and Bind Mounts, and structure the documentation files.
+
+## AI Usage
+AI was used to brainstorm best practices for PID 1 management inside 
+containers, understand the difference between Docker Volumes and Bind 
+Mounts, and structure the documentation files.
